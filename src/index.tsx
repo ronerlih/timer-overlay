@@ -1,5 +1,13 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import App from './App';
+import './style.css';
 
-render(<App />, document.getElementById('root'));
+const { ipcRenderer } = window.require('electron');
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
+document.onkeypress = function (e) {
+  e = e || window.event;
+  if (e.key.toLowerCase() === 'h') ipcRenderer.send('toggle', 's');
+};

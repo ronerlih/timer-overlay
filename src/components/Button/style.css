@@ -1,0 +1,13 @@
+.btn{
+  color:white;
+  padding:8px 11px 8px 12px!important;
+  border:1px solid white!important;
+  height: 41px;
+  width: 40px;
+  /* width:30%;  */
+  margin: 3%;
+  margin-top:10px;
+  border-radius: 300px;
+  position: relative;
+  top: 100px;
+}

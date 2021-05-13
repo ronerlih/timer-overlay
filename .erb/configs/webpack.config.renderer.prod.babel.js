@@ -12,6 +12,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import baseConfig from './webpack.config.base';
 import CheckNodeEnv from '../scripts/CheckNodeEnv';
 import DeleteSourceMaps from '../scripts/DeleteSourceMaps';
+const SRC = path.resolve(__dirname, 'node_modules');
 
 CheckNodeEnv('production');
 DeleteSourceMaps();
@@ -115,6 +116,11 @@ export default merge(baseConfig, {
           },
         },
       },
+      {
+         test: /\.mp3$/,
+         include: SRC,
+         loader: 'file-loader'
+       },
       // Common Image Formats
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,

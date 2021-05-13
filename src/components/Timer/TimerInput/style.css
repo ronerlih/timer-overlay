@@ -1,0 +1,44 @@
+.timerInput{
+   background: rgb(255 255 255 / 4%);
+   border: none;
+   outline: none;
+   color: white;
+   direction: rtl;
+   font-size: 20px;
+   max-width: 65px;
+   text-align: center;
+   text-align: right;
+   line-height: 0;
+   /* vertical-align: -18px; */
+   /* font-family: 'Six Caps', sans-serif; */
+   font-family: monospace;
+  /* vertical-align: -18px; */
+  /* font-family: 'Six Caps', sans-serif; */
+  /* font-family: 'Tulpen One', cursive; */
+
+}
+.timerInputSpan{
+  font-size: 20px;
+  color:white;
+  
+}
+.timerInput:active {
+  outline: none;
+  border: none;
+  }
+  .colomn{
+    vertical-align: baseline;
+    margin-left: 5px;
+    font-size: 47px;
+    padding-top: -10px;
+    line-height: 52px;  
+  font-family: 'Six Caps', sans-serif;
+
+  }
+
+    input[type=number]::-webkit-inner-spin-button {
+      /* -webkit-appearance: none; */
+      /* width:0px; */
+      color: green;
+      margin-right:-35px;
+    }

@@ -2,6 +2,7 @@
   "name": "electron-react-boilerplate",
   "productName": "ElectronReact",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
+  "main": "src/main.dev.ts",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
@@ -13,7 +14,9 @@
     "start": "node -r @babel/register ./.erb/scripts/CheckPortInUse.js && cross-env yarn start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/BabelRegister ./src/main.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js",
-    "test": "jest"
+    "test": "jest",
+   "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\""
+
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -64,17 +67,6 @@
           "path": "/Applications"
         }
       ]
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "category": "Development"
     },
     "directories": {
       "app": "src",
@@ -252,9 +244,11 @@
     "electron-log": "^4.2.4",
     "electron-updater": "^4.3.4",
     "history": "^5.0.0",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "react-sound": "^1.2.0",
     "regenerator-runtime": "^0.13.5",
     "source-map-support": "^0.5.19"
   },

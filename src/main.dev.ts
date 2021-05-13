@@ -11,10 +11,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+
+const WINDOW_WIDTH = 200;
+const WINDOW_HEIGHT = 300;
 
 export default class AppUpdater {
   constructor() {
@@ -26,38 +29,38 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const sourceMapSupport = require('source-map-support');
+//   sourceMapSupport.install();
+// }
 
-if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
-) {
-  require('electron-debug')();
-}
+// if (
+//   process.env.NODE_ENV === 'development' ||
+//   process.env.DEBUG_PROD === 'true'
+// ) {
+//   require('electron-debug')();
+// }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+// const installExtensions = async () => {
+//   const installer = require('electron-devtools-installer');
+//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+//   const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
-};
+//   return installer
+//     .default(
+//       extensions.map((name) => installer[name]),
+//       forceDownload
+//     )
+//     .catch(console.log);
+// };
 
 const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
-    await installExtensions();
-  }
+//   if (
+//     process.env.NODE_ENV === 'development' ||
+//     process.env.DEBUG_PROD === 'true'
+//   ) {
+//     await installExtensions();
+//   }
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
@@ -69,11 +72,16 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
     icon: getAssetPath('icon.png'),
+    width: WINDOW_WIDTH,
+    height: WINDOW_HEIGHT,
+    transparent: true,
+    alwaysOnTop: true,
+    frame: false,
+    hasShadow: false,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
@@ -92,9 +100,17 @@ const createWindow = async () => {
       mainWindow.focus();
     }
   });
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+  // eslint-disable-next-line no-restricted-globals
+  const { width } = screen.getPrimaryDisplay().workAreaSize;
+  mainWindow.setPosition(width, -10, true);
+
+  ipcMain.on('toggle', (e, toggle) => {
+    console.log(toggle);
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
